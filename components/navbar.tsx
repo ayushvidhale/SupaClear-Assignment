@@ -1,3 +1,4 @@
+"use client";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -14,6 +15,10 @@ import { Input } from "@nextui-org/input";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
+import { ToastContainer, toast } from "react-toastify";
+import NextTopLoader from "nextjs-toploader";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -28,7 +33,38 @@ import {
 import { FiPlus } from "react-icons/fi";
 import { FaLink } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
+import { useState } from "react";
+
 export const Navbar = () => {
+  const [link, setLink] = useState("");
+
+  const fetchScrapedData = async () => {
+    try {
+      const response = await fetch("/api/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: link }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Scraped Data:", data);
+      } else {
+        console.error("Failed to fetch scraped data.");
+      }
+    } catch (error) {
+      console.error("Error fetching scraped data:", error);
+    }
+  };
+
+  const handleKeyDown = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      fetchScrapedData();
+    }
+  };
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -47,11 +83,17 @@ export const Navbar = () => {
         <FaLink className="text-base text-default-400 pointer-events-none flex-shrink-0" />
       }
       type="search"
+      value={link}
+      onChange={(e) => setLink(e.target.value)}
+      onKeyDown={handleKeyDown} // Trigger scraping on Enter
     />
   );
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
+      <ToastContainer stacked />
+      <NextTopLoader color="#434089" />
+
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -96,7 +138,7 @@ export const Navbar = () => {
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            // as={Link}
+            onClick={fetchScrapedData}
             className="text-sm font-normal text-default-600 bg-default-100"
             startContent={<BsStars className="text-primary" />}
             variant="flat"
