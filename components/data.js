@@ -43,9 +43,9 @@ export default [
       "Support for dark and light theme",
       "Accessibility features like animated images and link underlines",
     ],
-    clients: ["Web developers", "GitHub users"],
+    clients: ["Shopify", "honeywell"],
     industries: ["Web development", "Software development"],
-    pricing: "Not applicable",
+    pricing: "N/A",
     description:
       "GitHub is where people build software. More than 100 million people use GitHub to discover, fork, and contribute to over 420 million projects.",
     imageUrl: "https://github.githubassets.com/favicons/favicon.svg",

@@ -140,7 +140,7 @@ export const Navbar = () => {
           <Button
             onClick={fetchScrapedData}
             className="text-sm font-normal text-default-600 bg-default-100"
-            startContent={<BsStars className="text-primary" />}
+            startContent={<BsStars className="text-purple-500" />}
             variant="flat"
           >
             Generate
