@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody, Image, Chip } from "@nextui-org/react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { TbMoneybag } from "react-icons/tb";
+import { MdWork, MdOutlineStar, MdOutlineBusinessCenter } from "react-icons/md";
 
 export default function CardComponent({
   title,
@@ -20,8 +21,8 @@ export default function CardComponent({
   const daysAgo = formatDistanceToNow(date, { addSuffix: true });
 
   return (
-    <Link href={`/details/${slug}`} className="w-full">
-      <Card className="max-w-2xl hover:scale-105 cursor-pointer">
+    <Link href={`/details/${slug}`} className="w-full h-full">
+      <Card className="max-w-2xl hover:scale-105 cursor-pointer h-full">
         <CardHeader className="flex p-4">
           <Image
             src={
@@ -40,30 +41,42 @@ export default function CardComponent({
         </CardHeader>
 
         <CardBody className="px-4 pt-2 pb-4">
-          <div className="flex flex-wrap gap-2 mb-3">
-            {industries?.slice(0, 2).map((feature, index) => (
-              <Chip key={index} color="secondary" size="sm" variant="dot">
-                {feature}
-              </Chip>
-            ))}
+          <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap gap-2 mb-3">
+              {industries?.slice(0, 2).map((industry, index) => (
+                <Chip key={index} color="secondary" size="sm" variant="dot">
+                  {industry}
+                </Chip>
+              ))}
+            </div>
           </div>
-
-          <div className="px-4">
-            {/* <div className="flex justify-between text-sm mb-2">
+          <div className="px-4 mt-auto">
+            <div className="flex justify-between text-sm mb-2">
+              {/* Number of Features */}
               <p className="flex items-center">
-                <span className="mr-1 text-green-400">●</span> 21 Jobs Open
+                <MdWork className="mr-1 text-green-400" />
+                {features.length > 0 ? `${features.length} Features` : "N/A"}
               </p>
+              {/* Number of Differentiators */}
               <p className="flex items-center">
-                <span className="mr-1">📅</span> 10 Applications
+                <MdOutlineStar className="mr-1 text-yellow-400" />
+                {differentiators.length > 0
+                  ? `${differentiators.length} Differentiators`
+                  : "N/A"}
               </p>
-            </div> */}
+            </div>
 
-            <div className="flex justify-between text-sm">
-              <p className="text-green-400 flex font-semibold">
-                <TbMoneybag className="mr-1 text-[16px]" /> {pricing}
+            <div className="flex justify-between text-sm mb-2">
+              {/* Number of Industries */}
+              <p className="flex items-center">
+                <MdOutlineBusinessCenter className="mr-1 text-blue-400" />
+                {industries?.length > 0
+                  ? `${industries.length} Industries`
+                  : "N/A"}
               </p>
+              {/* Days Ago */}
               <p className="flex items-center whitespace-nowrap text-gray-600 dark:text-gray-300">
-                {daysAgo}
+                {daysAgo ? `${daysAgo}` : "N/A"}
               </p>
             </div>
           </div>

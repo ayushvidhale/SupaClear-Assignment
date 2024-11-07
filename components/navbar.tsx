@@ -67,6 +67,7 @@ export const Navbar = () => {
           imageUrl,
           link,
           slug,
+          summary,
         } = data;
 
         const saveResponse = await createListing({
@@ -80,6 +81,7 @@ export const Navbar = () => {
           imageUrl,
           link,
           slug,
+          summary,
         });
 
         if (saveResponse.success) {

@@ -13,6 +13,7 @@ export async function createListing({
   imageUrl,
   link,
   slug,
+  summary,
 }: {
   title: string;
   subtitle: string;
@@ -24,6 +25,7 @@ export async function createListing({
   imageUrl: string;
   link: string;
   slug: string;
+  summary: string;
 }) {
   try {
     await connect();
@@ -39,6 +41,7 @@ export async function createListing({
       imageUrl,
       link,
       slug,
+      summary,
     });
 
     await newListing.save();

@@ -76,6 +76,16 @@ export default function DetailsPage({ params }) {
               <Tab key="description" title={<span>Description</span>}>
                 <div className="text-gray-400 text-base mt-2 px-4">
                   {/* Features */}
+                  {listing?.summary && (
+                    <>
+                      <h3 className="font-semibold text-xl mb-1 text-gray-800 dark:text-gray-200">
+                        Summary
+                      </h3>
+                      <p>{listing?.summary}</p>
+                    </>
+                  )}
+
+                  {/* Features */}
                   <h3 className="font-semibold text-xl mb-1 text-gray-800 dark:text-gray-200">
                     Features
                   </h3>
@@ -92,42 +102,59 @@ export default function DetailsPage({ params }) {
                   ))}
 
                   {/* Clients and Industries */}
-                  <h3 className="font-semibold text-xl mt-4 mb-1 text-gray-800 dark:text-gray-200">
-                    Clients
-                  </h3>
-                  <div className="flex flex-wrap w-full gap-4 py-2">
-                    {listing?.clients.map((client, index) => (
-                      <a
-                        href="#"
-                        key={index}
-                        class="flex listings-center w-fit justify-center p-3 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
-                      >
-                        <FaLink className="mr-2 text-purple-600 text-xl" />
-                        <span class="w-full">{client}</span>
-                        <MdOutlineArrowOutward className="text-xl" />
-                      </a>
-                    ))}
-                  </div>
+                  {listing?.clients && listing?.clients.length > 0 && (
+                    <>
+                      <h3 className="font-semibold text-xl mt-4 mb-1 text-gray-800 dark:text-gray-200">
+                        Clients
+                      </h3>
+                      <div className="flex flex-wrap w-full gap-4 py-2">
+                        {listing?.clients.map((client, index) => (
+                          <a
+                            href="#"
+                            key={index}
+                            class="flex listings-center w-fit justify-center p-3 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                          >
+                            <FaLink className="mr-2 text-purple-600 text-xl" />
+                            <span class="w-full">{client}</span>
+                            <MdOutlineArrowOutward className="text-xl" />
+                          </a>
+                        ))}
+                      </div>
+                    </>
+                  )}
 
-                  <h3 className="font-semibold text-xl mt-4 mb-1 text-gray-800 dark:text-gray-200">
-                    Industries
-                  </h3>
-                  <p>{listing?.industries.join(", ")}</p>
+                  {listing?.industries && listing?.industries.length > 0 && (
+                    <>
+                      <h3 className="font-semibold text-xl mt-4 mb-1 text-gray-800 dark:text-gray-200">
+                        Industries
+                      </h3>
+                      <p>{listing?.industries.join(", ")}</p>
+                    </>
+                  )}
 
                   {/* Pricing */}
                   <h3 className="font-semibold text-xl mt-4 mb-1 text-gray-800 dark:text-gray-200">
                     Pricing
                   </h3>
-                  <p>{listing?.pricing}</p>
+                  <p className="text-green-600">{listing?.pricing}</p>
                 </div>
               </Tab>
 
               <Tab key="reddit-reviews" title={<span>Reddit Reviews</span>}>
                 <div className="text-gray-400 text-sm mt-2">
                   {/* Placeholder for Reddit Reviews */}
-                  <p>Loading Reddit reviews...</p>
+                  <div className="w-full p-8 px-16 overflow-hidden rounded-3xl object-cover opacity-90">
+                    <img
+                      src="/empty-review.png"
+                      className="w-full"
+                      alt="empty-review"
+                    />
+                  </div>
+                  <p className="text-center text-lg">No Reddit Reviews Found</p>
                   {/* Here you could dynamically load and display Reddit reviews based on your data */}
                 </div>
+                <br />
+                <br />
               </Tab>
             </Tabs>
           </CardBody>

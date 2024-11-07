@@ -20,16 +20,17 @@ function generateSlug(url) {
 async function analyzeHtmlContentWithChatGPT(htmlContent) {
   const prompt = `Analyze the provided HTML content and extract structured information in JSON format. Please ensure the following data fields are included with specified types:
   - subtitle (string): A description of the product.
-  - features (array of strings): A list of key features or functionalities highlighted on the page (in-detail for each feature).
+  - features (array of strings): A list of key features or functionalities highlighted on the page (in detail for each feature).
   - differentiators (array of strings): Qualities that make this product unique or superior.
   - clients (array of strings): Names of organizations that are using this product.
   - industries (array of strings): Relevant industries to which this product applies.
-  - pricing (string): Pricing details with their values (ex: $50 per user/month or N/A if not sure).
+  - pricing (string): Pricing details with their values (e.g., $50 per user/month or N/A if not sure).
+  - summary (string): A summary of all the points highlighted into two paragraphs.
 
   Note: If any field is not directly available in the content, make a reasonable assumption based on context. Also, give a detailed data in return for each variable of JSON as that will be shown to users as points in paragraphs.
 
   HTML content:
-  ${htmlContent.slice(0, 6000)} // Limiting the HTML snippet to 3000 characters for processing efficiency.
+  ${htmlContent.slice(0, 6000)}
 
   Provide the response in valid JSON format:
   `;
@@ -86,6 +87,7 @@ export async function POST(request) {
       clients: chatGPTData.clients || [],
       industries: chatGPTData.industries || [],
       pricing: chatGPTData.pricing || "No pricing information available",
+      summary: chatGPTData.summary,
       description,
       imageUrl: icon,
       link: url,

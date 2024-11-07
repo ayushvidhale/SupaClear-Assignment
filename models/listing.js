@@ -49,6 +49,9 @@ const listingSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+    summary: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
