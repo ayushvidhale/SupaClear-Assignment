@@ -10,29 +10,41 @@ export async function GET(request) {
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
     );
-    await page.goto("https://github.com/mendableai/firecrawl", {
-      waitUntil: "networkidle2",
-    });
-
-    // Extract product names directly from the page
-    const pageContent = await page.evaluate(() => document.body.innerHTML);
-    console.log(pageContent); // Log the content to check if the page loaded as expected
+    await page.goto("https://www.capterra.com/machine-learning-software/");
 
     const products = await page.evaluate(() => {
       const productElements = document.querySelectorAll(
-        ".segmented-shadow-card__segment.segmented-shadow-card__segment--multi-part"
+        '[id^="product-card-container"]'
       );
+      const data = [];
 
-      const productList = [];
       productElements.forEach((product) => {
-        const nameElement = product.querySelector(
-          '.product-card__product-name [itemprop="name"]'
-        );
-        const name = nameElement ? nameElement.textContent.trim() : null;
-        if (name) productList.push({ name });
+        // Extract the product name
+        const name = product.querySelector("a.sb.link h2")?.innerText || "";
+
+        // Extract the product description
+        const description =
+          product.querySelector(".text-neutral-99")?.innerText || "";
+
+        // Extract the product image URL
+        const image =
+          product.querySelector('img[alt="product-logo"]')?.src || "";
+
+        // Extract the rating and number of reviews
+        const rating =
+          product.querySelector(".star-rating-label")?.innerText || "";
+
+        // Extract the features
+        const features = Array.from(
+          product.querySelectorAll(
+            '[data-testid="product-card-category-features"] span'
+          )
+        ).map((feature) => feature.innerText);
+
+        data.push({ name, description, image, rating, features });
       });
 
-      return productList;
+      return data;
     });
 
     await browser.close();

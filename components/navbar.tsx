@@ -34,9 +34,12 @@ import { FiPlus } from "react-icons/fi";
 import { FaLink } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
 import { useState } from "react";
+import { createListing } from "@/actions/createListing"; // Import createListing action
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const [link, setLink] = useState("");
+  const router = useRouter();
 
   const fetchScrapedData = async () => {
     try {
@@ -51,6 +54,40 @@ export const Navbar = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Scraped Data:", data);
+        // Call createListing to save the scraped data to the database
+        const {
+          title,
+          subtitle,
+          features,
+          differentiators,
+          clients,
+          industries,
+          pricing,
+          description,
+          imageUrl,
+          link,
+          slug,
+        } = data;
+
+        const saveResponse = await createListing({
+          title,
+          subtitle,
+          features,
+          differentiators,
+          clients,
+          industries,
+          pricing,
+          imageUrl,
+          link,
+          slug,
+        });
+
+        if (saveResponse.success) {
+          router.push(`/details/${slug}`);
+          console.log("Listing saved successfully:", saveResponse.listing);
+        } else {
+          console.error("Failed to save listing:", saveResponse.message);
+        }
       } else {
         console.error("Failed to fetch scraped data.");
       }
